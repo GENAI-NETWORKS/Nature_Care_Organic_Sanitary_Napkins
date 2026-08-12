@@ -91,11 +91,11 @@ export default function Footer() {
             <h4>Find Us</h4>
             <div className="footer__map-frame">
               <iframe
-                title="M.S.K. Agencies location map Salem, Tamil Nadu"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62660.2447285988!2d78.1282234!3d11.6612586!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3babf1add4585ab7%3A0x62ef31a06af2fd4b!2sSalem%2C%20Tamil%20Nadu%20636001!5e0!3m2!1sen!2sin!4v1700000000000"
+                title="M.S.K. Agencies exact location — 91/23 North Street, Pachapatti Main Road, Salem"
+                src="https://maps.google.com/maps?q=91%2F23+North+Street%2C+3rd+Cross%2C+Pachapatti+Main+Road%2C+Salem%2C+Tamil+Nadu+636001%2C+India&t=&z=17&ie=UTF8&iwloc=&output=embed"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                aria-label="Map showing Salem, Tamil Nadu M.S.K. Agencies location"
+                aria-label="Map showing exact location of M.S.K. Agencies at 91/23 North Street, Pachapatti Main Road, Salem"
               />
             </div>
           </div>

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
+import ShowcaseVideo from "./components/ShowcaseVideo";
 import TrustStrip from "./components/TrustStrip";
 import ProductGrid from "./components/ProductGrid";
 import WhyAnion from "./components/WhyAnion";
@@ -51,6 +52,7 @@ export default function App() {
       <Navbar />
       <main id="main-content" tabIndex={-1}>
         <Hero />
+        <ShowcaseVideo />
         <TrustStrip />
         <ProductGrid />
         <WhyAnion />
