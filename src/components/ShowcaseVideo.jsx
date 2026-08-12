@@ -17,7 +17,7 @@ export default function ShowcaseVideo() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Attempt to play (currently unmuted)
+            // Attempt to play (unmuted)
             const playPromise = video.play();
             if (playPromise !== undefined) {
               playPromise
@@ -26,23 +26,12 @@ export default function ShowcaseVideo() {
                   setShowPlayOverlay(false);
                 })
                 .catch((error) => {
-                  console.warn("Unmuted autoplay prevented. Falling back to muted autoplay:", error);
-                  // Browser blocked unmuted autoplay. 
-                  // Fallback: Mute it and play so the visual experience isn't broken.
-                  video.muted = true;
-                  setIsMuted(true);
-                  
-                  const mutedPlayPromise = video.play();
-                  if (mutedPlayPromise !== undefined) {
-                    mutedPlayPromise.then(() => {
-                      setIsPlaying(true);
-                      setShowPlayOverlay(false);
-                    }).catch(err => {
-                      // If even muted autoplay fails (e.g. strict data saver mode)
-                      setIsPlaying(false);
-                      setShowPlayOverlay(true);
-                    });
-                  }
+                  console.warn("Browser blocked unmuted autoplay:", error);
+                  // The user requested NO fallback to muted autoplay.
+                  // Therefore, if the browser blocks the sound, the video simply will not play
+                  // until the user manually clicks the play button.
+                  setIsPlaying(false);
+                  setShowPlayOverlay(true);
                 });
             }
           } else {
