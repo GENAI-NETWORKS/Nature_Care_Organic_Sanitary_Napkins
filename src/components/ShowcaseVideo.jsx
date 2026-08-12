@@ -13,6 +13,27 @@ export default function ShowcaseVideo() {
     const video = videoRef.current;
     if (!video) return;
 
+    // HACK: Prime the video audio context on the very first user interaction anywhere on the page
+    // This is required by iOS Safari and Chrome to allow the IntersectionObserver to play unmuted later.
+    const unlockAudio = () => {
+      if (video.paused) {
+        // Briefly attempt to play and immediately pause to unlock the media element in this user-gesture call stack
+        const p = video.play();
+        if (p !== undefined) {
+          p.then(() => {
+            if (!isPlaying) video.pause();
+          }).catch(() => {});
+        }
+      }
+      document.removeEventListener('touchstart', unlockAudio);
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('keydown', unlockAudio);
+    };
+
+    document.addEventListener('touchstart', unlockAudio, { passive: true });
+    document.addEventListener('click', unlockAudio, { passive: true });
+    document.addEventListener('keydown', unlockAudio, { passive: true });
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -48,6 +69,9 @@ export default function ShowcaseVideo() {
 
     return () => {
       observer.disconnect();
+      document.removeEventListener('touchstart', unlockAudio);
+      document.removeEventListener('click', unlockAudio);
+      document.removeEventListener('keydown', unlockAudio);
     };
   }, []);
 
