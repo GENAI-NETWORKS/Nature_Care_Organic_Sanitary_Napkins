@@ -5,7 +5,7 @@ import "./ShowcaseVideo.css";
 
 export default function ShowcaseVideo() {
   const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(false); // start unmuted as requested
+  const [isMuted, setIsMuted] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPlayOverlay, setShowPlayOverlay] = useState(false);
 
@@ -13,65 +13,57 @@ export default function ShowcaseVideo() {
     const video = videoRef.current;
     if (!video) return;
 
-    // HACK: Prime the video audio context on the very first user interaction anywhere on the page
-    // This is required by iOS Safari and Chrome to allow the IntersectionObserver to play unmuted later.
-    const unlockAudio = () => {
-      if (video.paused) {
-        // Briefly attempt to play and immediately pause to unlock the media element in this user-gesture call stack
-        const p = video.play();
-        if (p !== undefined) {
-          p.then(() => {
-            if (!isPlaying) video.pause();
-          }).catch(() => {});
-        }
-      }
-      document.removeEventListener('touchstart', unlockAudio);
-      document.removeEventListener('click', unlockAudio);
-      document.removeEventListener('keydown', unlockAudio);
-    };
-
-    document.addEventListener('touchstart', unlockAudio, { passive: true });
-    document.addEventListener('click', unlockAudio, { passive: true });
-    document.addEventListener('keydown', unlockAudio, { passive: true });
+    // We start the video physically muted so the browser allows the play() call
+    video.muted = true;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Attempt to play (unmuted)
+            
+            // 1. Play the video (it is muted, so this will 100% succeed)
             const playPromise = video.play();
             if (playPromise !== undefined) {
-              playPromise
-                .then(() => {
-                  setIsPlaying(true);
-                  setShowPlayOverlay(false);
-                })
-                .catch((error) => {
-                  console.warn("Browser blocked unmuted autoplay:", error);
-                  // The user requested NO fallback to muted autoplay.
-                  // Therefore, if the browser blocks the sound, the video simply will not play
-                  // until the user manually clicks the play button.
-                  setIsPlaying(false);
-                  setShowPlayOverlay(true);
-                });
+              playPromise.then(() => {
+                setIsPlaying(true);
+                setShowPlayOverlay(false);
+
+                // 2. Immediately try to unmute it programmatically
+                video.muted = false;
+                
+                // 3. Check if the browser paused it because we unmuted without a click
+                setTimeout(() => {
+                  if (video.paused) {
+                    // Browser caught the unmute hack and stopped the video.
+                    // We must revert to muted so the video at least keeps playing visually.
+                    video.muted = true;
+                    setIsMuted(true);
+                    video.play();
+                  } else {
+                    // Success! It is playing unmuted!
+                    setIsMuted(false);
+                  }
+                }, 50);
+
+              }).catch(() => {
+                // Total failure, show play button
+                setIsPlaying(false);
+                setShowPlayOverlay(true);
+              });
             }
           } else {
-            // Pause when out of view
             video.pause();
             setIsPlaying(false);
           }
         });
       },
-      { threshold: 0.3 } // Trigger when 30% of the video is visible
+      { threshold: 0.3 }
     );
 
     observer.observe(video);
 
     return () => {
       observer.disconnect();
-      document.removeEventListener('touchstart', unlockAudio);
-      document.removeEventListener('click', unlockAudio);
-      document.removeEventListener('keydown', unlockAudio);
     };
   }, []);
 
