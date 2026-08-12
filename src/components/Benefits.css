@@ -1,0 +1,250 @@
+/* ── Benefits – Zigzag Journey Redesign ─────────────────── */
+.benefits {
+  background: var(--charcoal);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background texture */
+.benefits::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 20%, rgba(76,175,130,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(123,63,110,0.07) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ── Header ─────────────────────────────────────────────── */
+.benefits__head {
+  text-align: center;
+  margin-bottom: 4.5rem;
+}
+
+.benefits__head .section-label {
+  color: var(--green-soft);
+}
+
+.benefits__title {
+  color: #fff !important;
+}
+
+.benefits__title-highlight {
+  background: linear-gradient(135deg, var(--green-soft) 0%, var(--plum-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.benefits__subtitle {
+  color: rgba(255,255,255,0.5);
+  font-size: var(--fs-base);
+  line-height: 1.7;
+  margin-top: .75rem;
+}
+
+/* ── Journey container ───────────────────────────────────── */
+.benefits__journey {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  max-width: 780px;
+  margin-inline: auto;
+}
+
+/* ── Each row ────────────────────────────────────────────── */
+.bj-row {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 1.5rem;
+  align-items: flex-start;
+  position: relative;
+}
+
+/* Right-side rows: flip card to right, number stays left */
+.bj-row--right .bj-card {
+  transform-origin: left center;
+}
+
+/* ── Number column ───────────────────────────────────────── */
+.bj-num-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.bj-num {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  border: 2px solid var(--accent, var(--green-soft));
+  box-shadow: 0 0 20px var(--glow, rgba(76,175,130,0.2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--accent, var(--green-soft));
+  letter-spacing: -.03em;
+  flex-shrink: 0;
+  transition: box-shadow .3s ease;
+}
+
+.bj-row:hover .bj-num {
+  box-shadow: 0 0 36px var(--glow, rgba(76,175,130,0.35));
+}
+
+.bj-line {
+  width: 2px;
+  flex: 1;
+  min-height: 2rem;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.12), rgba(255,255,255,0.04));
+  margin-block: 6px;
+}
+
+/* ── Card ────────────────────────────────────────────────── */
+.bj-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+  padding: 1.5rem 1.6rem;
+  margin-bottom: 1.25rem;
+  border-radius: var(--radius-lg);
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(255,255,255,0.08);
+  overflow: hidden;
+  transition:
+    transform var(--dur-mid) var(--ease),
+    border-color var(--dur-mid) var(--ease),
+    box-shadow var(--dur-mid) var(--ease);
+  cursor: default;
+}
+
+.bj-card:hover {
+  transform: translateX(6px) scale(1.01);
+  border-color: var(--accent, var(--green-soft));
+  box-shadow: 0 8px 32px var(--glow, rgba(76,175,130,0.15));
+}
+
+.bj-row--right .bj-card:hover {
+  transform: translateX(6px) scale(1.01);
+}
+
+/* Glowing corner accent */
+.bj-card__glow {
+  position: absolute;
+  top: -30px;
+  right: -30px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: var(--glow, rgba(76,175,130,0.15));
+  filter: blur(30px);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.bj-card:hover .bj-card__glow {
+  opacity: 1;
+}
+
+/* ── Icon ────────────────────────────────────────────────── */
+.bj-card__icon-wrap {
+  flex-shrink: 0;
+}
+
+.bj-card__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-md);
+  background: var(--glow, rgba(76,175,130,0.15));
+  border: 1.5px solid var(--accent, var(--green-soft));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent, var(--green-soft));
+  transition: background .3s ease;
+}
+
+.bj-card:hover .bj-card__icon {
+  background: rgba(255,255,255,0.08);
+}
+
+/* ── Text ────────────────────────────────────────────────── */
+.bj-card__body {
+  flex: 1;
+}
+
+.bj-card__title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: .35rem;
+  line-height: 1.3;
+}
+
+.bj-card__desc {
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,0.55);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ── Left accent stripe ──────────────────────────────────── */
+.bj-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 3px;
+  border-radius: 2px;
+  background: var(--accent, var(--green-soft));
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+
+.bj-card:hover::before {
+  opacity: 1;
+}
+
+/* ── Mobile ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .benefits__journey {
+    max-width: 100%;
+  }
+
+  .bj-row {
+    grid-template-columns: 48px 1fr;
+    gap: 1rem;
+  }
+
+  .bj-num {
+    width: 44px;
+    height: 44px;
+    font-size: .85rem;
+  }
+
+  .bj-card {
+    padding: 1.2rem 1.2rem;
+    gap: .85rem;
+  }
+
+  .bj-card__icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .bj-card__title {
+    font-size: var(--fs-base);
+  }
+
+  .benefits__subtitle br {
+    display: none;
+  }
+}

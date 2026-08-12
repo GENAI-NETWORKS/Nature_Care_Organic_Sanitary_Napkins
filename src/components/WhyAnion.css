@@ -1,0 +1,225 @@
+/* ================================================================
+   Why Anion — Visual Bento-Grid Layout
+   ================================================================ */
+.why-anion {
+  background: linear-gradient(160deg, #0f2a1a 0%, #1a4731 50%, #1e3040 100%);
+  color: var(--white);
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle noise overlay */
+.why-anion::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.why-anion .container { position: relative; z-index: 1; }
+
+/* ── Header ────────────────────────────────────────────── */
+.why-anion__head {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .why-anion__head { margin-bottom: 3rem; }
+}
+
+.why-anion__head .section-label {
+  background: rgba(76,175,130,.2);
+  color: #6ddfaa;
+  border: 1px solid rgba(76,175,130,.3);
+}
+
+.why-anion__head .section-title {
+  color: #fff;
+  margin-bottom: .5rem;
+}
+
+.why-anion__kicker {
+  font-size: clamp(var(--fs-base), 2.5vw, var(--fs-xl));
+  font-weight: 500;
+  color: rgba(255,255,255,.55);
+  max-width: 44ch;
+  margin-inline: auto;
+  line-height: 1.5;
+}
+
+.why-anion__kicker strong {
+  color: #6ddfaa;
+  font-weight: 700;
+}
+
+/* ── Bento grid ────────────────────────────────────────── */
+.anion-bento {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+@media (min-width: 480px)  { .anion-bento { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1000px) { .anion-bento { grid-template-columns: repeat(3, 1fr); gap: 1.5rem; } }
+
+/* ── Base card ─────────────────────────────────────────── */
+.anion-card {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  border: 1px solid rgba(255,255,255,.08);
+  transition: transform var(--dur-mid) var(--ease),
+              box-shadow var(--dur-mid) var(--ease);
+  cursor: default;
+}
+
+@media (min-width: 480px) {
+  .anion-card { aspect-ratio: 1 / 1; min-height: unset; }
+}
+
+.anion-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  border-color: rgba(109,223,170,.25);
+}
+
+.anion-card__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.anion-card__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform .6s var(--ease);
+}
+
+.anion-card:hover .anion-card__bg img {
+  transform: scale(1.08);
+}
+
+.anion-card__gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(15,42,26,0.95) 0%, rgba(15,42,26,0.5) 50%, rgba(15,42,26,0.1) 100%);
+  transition: background .6s var(--ease);
+}
+
+.anion-card:hover .anion-card__gradient {
+  background: linear-gradient(to top, rgba(15,42,26,0.95) 0%, rgba(15,42,26,0.65) 50%, rgba(15,42,26,0.2) 100%);
+}
+
+.anion-card__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.25rem;
+}
+
+.anion-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.anion-card__tag {
+  background: rgba(0,0,0,.45);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .35rem .75rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.2);
+}
+
+.anion-card__icon-chip {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(109,223,170,.9);
+  color: #0f2a1a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(109,223,170,.4);
+}
+
+.anion-card__bottom {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+}
+
+.anion-card__title {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+}
+
+.anion-card__sub {
+  font-size: var(--fs-sm);
+  color: rgba(255,255,255,.8);
+  line-height: 1.55;
+}
+
+/* ── Stat row ──────────────────────────────────────────── */
+.why-anion__stats {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  margin-top: 2rem;
+  background: rgba(255,255,255,.08);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,.08);
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+@media (min-width: 480px) {
+  .why-anion__stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+.why-anion__stat {
+  padding: 1.5rem 1rem;
+  background: rgba(255,255,255,.03);
+  text-align: center;
+  transition: background var(--dur-mid) var(--ease);
+}
+
+.why-anion__stat:hover { background: rgba(109,223,170,.1); }
+
+.why-anion__stat-num {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #6ddfaa;
+  display: block;
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+
+.why-anion__stat-label {
+  font-size: var(--fs-xs);
+  color: rgba(255,255,255,.5);
+  font-weight: 500;
+  letter-spacing: .04em;
+}
