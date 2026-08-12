@@ -17,7 +17,7 @@ export default function ShowcaseVideo() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Attempt to play
+            // Attempt to play (currently unmuted)
             const playPromise = video.play();
             if (playPromise !== undefined) {
               playPromise
@@ -26,9 +26,23 @@ export default function ShowcaseVideo() {
                   setShowPlayOverlay(false);
                 })
                 .catch((error) => {
-                  console.warn("Autoplay prevented:", error);
-                  setIsPlaying(false);
-                  setShowPlayOverlay(true);
+                  console.warn("Unmuted autoplay prevented. Falling back to muted autoplay:", error);
+                  // Browser blocked unmuted autoplay. 
+                  // Fallback: Mute it and play so the visual experience isn't broken.
+                  video.muted = true;
+                  setIsMuted(true);
+                  
+                  const mutedPlayPromise = video.play();
+                  if (mutedPlayPromise !== undefined) {
+                    mutedPlayPromise.then(() => {
+                      setIsPlaying(true);
+                      setShowPlayOverlay(false);
+                    }).catch(err => {
+                      // If even muted autoplay fails (e.g. strict data saver mode)
+                      setIsPlaying(false);
+                      setShowPlayOverlay(true);
+                    });
+                  }
                 });
             }
           } else {
@@ -93,7 +107,7 @@ export default function ShowcaseVideo() {
           
           {/* Mute/Unmute Toggle */}
           <button 
-            className={`showcase-video__mute-btn ${showPlayOverlay ? 'hidden' : ''}`}
+            className={`showcase-video__mute-btn ${showPlayOverlay ? 'hidden' : ''} ${isMuted && isPlaying ? 'suggest-unmute' : ''}`}
             onClick={toggleMute}
             aria-label={isMuted ? "Unmute video" : "Mute video"}
           >
