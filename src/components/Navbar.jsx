@@ -51,8 +51,7 @@ export default function Navbar() {
           <a href="#home" className="navbar__logo" onClick={(e) => handleNavClick(e, "#home")} aria-label="Nature Care Organic home">
             <img src={logo} alt="Nature Care Organic logo" className="navbar__logo-img" />
             <span className="navbar__logo-text">
-              <strong>Nature Care Organic</strong>
-              <span>Sanitary Napkins · M.S.K. Agencies</span>
+              <strong>Nature Care Organic Sanitary Napkins</strong>
             </span>
           </a>
 
@@ -105,7 +104,7 @@ export default function Navbar() {
               ))}
             </nav>
 
-            <p className="mobile-drawer__brand">Nature Care Organic · M.S.K. Agencies</p>
+            <p className="mobile-drawer__brand">Nature Care Organic Sanitary Napkins</p>
 
           </div>
         </div>
