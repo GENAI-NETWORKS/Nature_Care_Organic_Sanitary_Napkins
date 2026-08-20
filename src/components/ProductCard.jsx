@@ -1,6 +1,6 @@
 import "./ProductCard.css";
 
-export default function ProductCard({ product, index = 0 }) {
+export default function ProductCard({ product, index = 0, onOrderClick }) {
   const delay = (index % 4) + 1;
 
   return (
@@ -45,6 +45,13 @@ export default function ProductCard({ product, index = 0 }) {
           
           <span className="price-label">Packaging:</span>
           <span className="price-value">{product.packaging}</span>
+        </div>
+
+        {/* Order Button */}
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '1.25rem' }}>
+          <button className="product-card__order-btn btn-primary" onClick={() => onOrderClick(product)}>
+            Order Now
+          </button>
         </div>
       </div>
     </article>

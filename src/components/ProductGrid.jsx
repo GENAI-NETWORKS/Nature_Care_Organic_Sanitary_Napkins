@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { PRODUCTS, FILTER_TABS } from "../data/products";
 import ProductCard from "./ProductCard";
+import OrderModal from "./OrderModal";
 import "./ProductGrid.css";
 
 export default function ProductGrid() {
   const [active, setActive] = useState("all");
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleOrderClick = (product) => {
+    setSelectedProduct(product);
+  };
 
   const filtered =
     active === "all" ? PRODUCTS : PRODUCTS.filter((p) => p.tags.includes(active));
@@ -51,13 +57,20 @@ export default function ProductGrid() {
         >
           {filtered.length > 0 ? (
             filtered.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
+              <ProductCard key={p.id} product={p} index={i} onOrderClick={handleOrderClick} />
             ))
           ) : (
             <p className="products__empty">No products found in this category.</p>
           )}
         </div>
       </div>
+
+      {selectedProduct && (
+        <OrderModal 
+          product={selectedProduct} 
+          onClose={() => setSelectedProduct(null)} 
+        />
+      )}
     </section>
   );
 }
