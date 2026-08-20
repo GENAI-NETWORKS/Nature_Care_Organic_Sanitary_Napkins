@@ -34,6 +34,18 @@ export default function ProductCard({ product, index = 0 }) {
             <li key={chip} className="product-card__chip">{chip}</li>
           ))}
         </ul>
+
+        {/* Pricing & Packaging */}
+        <div className="product-card__pricing">
+          <span className="price-label">MRP:</span>
+          <span className="price-value"><span className="rupee">₹</span>{product.mrp}/-</span>
+          
+          <span className="price-label">Wholesale:</span>
+          <span className="price-value"><span className="rupee">₹</span>{product.wholesale}/-</span>
+          
+          <span className="price-label">Packaging:</span>
+          <span className="price-value">{product.packaging}</span>
+        </div>
       </div>
     </article>
   );
